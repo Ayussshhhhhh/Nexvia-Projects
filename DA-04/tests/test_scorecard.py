@@ -60,11 +60,11 @@ def risk_band_data(scorecard_data):
     df = scorecard_data.copy()
 
     def assign_band(score):
-        if score >= 750:
+        if score >= 630:
             return 'Low'
-        elif score >= 650:
+        elif score >= 600:
             return 'Medium'
-        elif score >= 550:
+        elif score >= 560:
             return 'High'
         else:
             return 'Very High'

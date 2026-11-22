@@ -268,7 +268,9 @@ class CreditScorecard:
         ax.grid(True, linestyle=":", alpha=0.6)
 
         if save_path:
-            os.makedirs(os.path.dirname(save_path), exist_ok=True)
+            parent_dir = os.path.dirname(save_path)
+            if parent_dir:
+                os.makedirs(parent_dir, exist_ok=True)
             fig.savefig(save_path, dpi=300, bbox_inches="tight")
         return fig
 
@@ -289,10 +291,10 @@ class CreditScorecard:
         else:
             ax.hist(scores_arr, bins=35, alpha=0.8, color="#1f77b4", edgecolor="black", density=True)
 
-        # Risk band lines
-        ax.axvline(550, color="#d9534f", linestyle="--", lw=1.5, label="Very High / High Cutoff (550)")
+        # Risk band lines (must match assign_risk_band thresholds)
+        ax.axvline(560, color="#d9534f", linestyle="--", lw=1.5, label="Very High / High Cutoff (560)")
         ax.axvline(600, color="#f0ad4e", linestyle="--", lw=1.5, label="High / Medium Cutoff (600)")
-        ax.axvline(650, color="#5cb85c", linestyle="--", lw=1.5, label="Medium / Low Cutoff (650)")
+        ax.axvline(630, color="#5cb85c", linestyle="--", lw=1.5, label="Medium / Low Cutoff (630)")
 
         ax.set_xlabel("Scorecard Points", fontsize=11)
         ax.set_ylabel("Density", fontsize=11)
@@ -301,13 +303,17 @@ class CreditScorecard:
         ax.grid(True, linestyle=":", alpha=0.6)
 
         if save_path:
-            os.makedirs(os.path.dirname(save_path), exist_ok=True)
+            parent_dir = os.path.dirname(save_path)
+            if parent_dir:
+                os.makedirs(parent_dir, exist_ok=True)
             fig.savefig(save_path, dpi=300, bbox_inches="tight")
         return fig
 
     def save_model(self, file_path: str) -> None:
         """Serialize trained scorecard to disk."""
-        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+        parent_dir = os.path.dirname(file_path)
+        if parent_dir:
+            os.makedirs(parent_dir, exist_ok=True)
         joblib.dump(self, file_path)
         logger.info("Scorecard saved to %s", file_path)
 

@@ -1,6 +1,7 @@
 import pytest
 import numpy as np
 import pandas as pd
+from src.financial_calculations import calculate_budget_variance
 
 
 @pytest.fixture
@@ -137,3 +138,16 @@ def test_variance_percentage_zero_budget():
     else:
         result = (actual - budget) / budget
     assert np.isnan(result), "Zero budget should produce NaN variance percentage"
+
+
+def test_numpy_budget_variance_handles_zero_and_favorable_arrays():
+    actual = np.array([110.0, 90.0, 100.0])
+    budget = np.array([100.0, 100.0, 0.0])
+
+    variance, variance_pct, favorable = calculate_budget_variance(
+        actual, budget, is_revenue=True
+    )
+
+    np.testing.assert_array_equal(variance, np.array([10.0, -10.0, 100.0]))
+    np.testing.assert_allclose(variance_pct, np.array([0.1, -0.1, 0.0]))
+    np.testing.assert_array_equal(favorable, np.array([True, False, True]))

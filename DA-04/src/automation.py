@@ -170,10 +170,10 @@ def run_full_pipeline() -> Dict[str, Any]:
 
     # Create dimension tables
     dim_risk_band_df = pd.DataFrame([
-        {"risk_band_id": 1, "risk_band_name": "Low Risk", "min_score": 650, "max_score": 850, "expected_pd_range": "< 5%"},
-        {"risk_band_id": 2, "risk_band_name": "Medium Risk", "min_score": 600, "max_score": 649, "expected_pd_range": "5% - 15%"},
-        {"risk_band_id": 3, "risk_band_name": "High Risk", "min_score": 550, "max_score": 599, "expected_pd_range": "15% - 30%"},
-        {"risk_band_id": 4, "risk_band_name": "Very High Risk", "min_score": 300, "max_score": 549, "expected_pd_range": "> 30%"},
+        {"risk_band_id": 1, "risk_band_name": "Low Risk", "min_score": 630, "max_score": 850, "expected_pd_range": "< 5%"},
+        {"risk_band_id": 2, "risk_band_name": "Medium Risk", "min_score": 600, "max_score": 629, "expected_pd_range": "5% - 15%"},
+        {"risk_band_id": 3, "risk_band_name": "High Risk", "min_score": 560, "max_score": 599, "expected_pd_range": "15% - 30%"},
+        {"risk_band_id": 4, "risk_band_name": "Very High Risk", "min_score": 300, "max_score": 559, "expected_pd_range": "> 30%"},
     ])
     dim_risk_band_df.to_sql("dim_risk_band", conn, if_exists="replace", index=False)
     conn.commit()
@@ -351,7 +351,7 @@ def generate_board_pack_html_and_pdf(
         </tr>
         <tr>
             <td><span class="badge badge-low">Low Risk</span></td>
-            <td>&ge; 650 pts</td>
+            <td>&ge; 630 pts</td>
             <td>{risk_band_counts.get('Low Risk', 0):,}</td>
             <td>${risk_band_exposure.get('Low Risk', 0.0):,.0f}</td>
             <td>${risk_band_el.get('Low Risk', 0.0):,.0f}</td>
@@ -359,7 +359,7 @@ def generate_board_pack_html_and_pdf(
         </tr>
         <tr>
             <td><span class="badge badge-med">Medium Risk</span></td>
-            <td>600 - 649 pts</td>
+            <td>600 - 629 pts</td>
             <td>{risk_band_counts.get('Medium Risk', 0):,}</td>
             <td>${risk_band_exposure.get('Medium Risk', 0.0):,.0f}</td>
             <td>${risk_band_el.get('Medium Risk', 0.0):,.0f}</td>
@@ -367,7 +367,7 @@ def generate_board_pack_html_and_pdf(
         </tr>
         <tr>
             <td><span class="badge badge-high">High Risk</span></td>
-            <td>550 - 599 pts</td>
+            <td>560 - 599 pts</td>
             <td>{risk_band_counts.get('High Risk', 0):,}</td>
             <td>${risk_band_exposure.get('High Risk', 0.0):,.0f}</td>
             <td>${risk_band_el.get('High Risk', 0.0):,.0f}</td>
@@ -375,7 +375,7 @@ def generate_board_pack_html_and_pdf(
         </tr>
         <tr>
             <td><span class="badge badge-vhigh">Very High Risk</span></td>
-            <td>&lt; 550 pts</td>
+            <td>&lt; 560 pts</td>
             <td>{risk_band_counts.get('Very High Risk', 0):,}</td>
             <td>${risk_band_exposure.get('Very High Risk', 0.0):,.0f}</td>
             <td>${risk_band_el.get('Very High Risk', 0.0):,.0f}</td>
@@ -524,7 +524,7 @@ startxref
         f"Precision: {eval_metrics.get('precision', 0.0):.4f} | Recall: {eval_metrics.get('recall', 0.0):.4f}",
         "--------------------------------------------------------------------------------",
         "Scaling Parameters: Base Score = 600, Base Odds = 50:1, PDO = 20 pts",
-        "Cutoffs: Low (>=650), Medium (600-649), High (550-599), Very High (<550)",
+        "Cutoffs: Low (>=630), Medium (600-629), High (560-599), Very High (<560)",
     ]
     write_simple_pdf(cr_pdf_path, "CREDIT RISK SCORECARD & VALIDATION REPORT", cr_lines)
 

@@ -121,17 +121,28 @@ def calculate_budget_variance(
     For expense/cost: Actual < Budget is Favorable (True)
     """
     variance = actual - budget
-    
-    # Avoid zero division
+
+    # Avoid zero division while preserving Series/NumPy result shapes.
     if isinstance(budget, pd.Series):
-        var_pct = np.where(budget.abs() > 1e-6, variance / budget, 0.0)
-        if is_revenue:
-            is_favorable = variance >= 0
-        else:
-            is_favorable = variance <= 0
+        var_pct = budget.copy().astype(float)
+        var_pct[:] = np.where(
+            budget.abs().to_numpy() > 1e-6,
+            variance.to_numpy() / budget.to_numpy(),
+            0.0,
+        )
+    elif isinstance(budget, np.ndarray):
+        budget_arr = np.asarray(budget)
+        variance_arr = np.asarray(variance)
+        var_pct = np.divide(
+            variance_arr,
+            budget_arr,
+            out=np.zeros_like(variance_arr, dtype=float),
+            where=np.abs(budget_arr) > 1e-6,
+        )
     else:
         var_pct = variance / budget if abs(budget) > 1e-6 else 0.0
-        is_favorable = (variance >= 0) if is_revenue else (variance <= 0)
+
+    is_favorable = (variance >= 0) if is_revenue else (variance <= 0)
 
     return variance, var_pct, is_favorable
 

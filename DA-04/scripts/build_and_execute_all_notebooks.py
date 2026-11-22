@@ -853,10 +853,10 @@ plt.show()"""),
 
     md_cell("""### 4. Score Distribution and Risk Band Allocation
 We compute credit scores for the development sample and visualize separation between good and bad accounts across the 4 risk bands:
-* **Low Risk**: $\\text{Score} \\ge 650$
-* **Medium Risk**: $600 \\le \\text{Score} < 650$
-* **High Risk**: $550 \\le \\text{Score} < 600$
-* **Very High Risk**: $\\text{Score} < 550$"""),
+* **Low Risk**: $\\text{Score} \\ge 630$
+* **Medium Risk**: $600 \\le \\text{Score} < 630$
+* **High Risk**: $560 \\le \\text{Score} < 600$
+* **Very High Risk**: $\\text{Score} < 560$"""),
 
     code_cell("""prob_default = scorecard.predict_proba(X)
 scores = scorecard.calculate_score_from_pd(prob_default)
