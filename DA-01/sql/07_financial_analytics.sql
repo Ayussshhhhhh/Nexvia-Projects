@@ -13,6 +13,7 @@ WITH Monthly AS (
 SELECT m.CalendarYear,m.MonthNumber,m.YearMonth,m.RegionName,m.CategoryName,m.Revenue,m.ProductCost,m.GrossProfit,m.Orders,
  m.GrossProfit/NULLIF(m.Revenue,0) MarginPct,
  pm.Revenue PriorMonthRevenue,py.Revenue PriorYearRevenue,
+ (m.Revenue-pm.Revenue)/NULLIF(pm.Revenue,0) MoMGrowthPct,
  (m.Revenue-py.Revenue)/NULLIF(py.Revenue,0) YoYGrowthPct,
  RANK() OVER(PARTITION BY m.CalendarYear,m.MonthNumber ORDER BY m.Revenue DESC) RegionalRank
 FROM Monthly m

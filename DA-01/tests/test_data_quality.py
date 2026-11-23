@@ -12,6 +12,8 @@ def yoy(current, prior):
 
 
 def rolling_average(values, window):
+    if window is None or window <= 0:
+        return None
     sample = values[-window:]
     return None if len(sample) < window else sum(sample) / window
 
@@ -38,6 +40,7 @@ class MetricTests(unittest.TestCase):
     def test_rolling_monthly_average(self):
         self.assertEqual(rolling_average([1, 2, 3, 4], 3), 3)
         self.assertIsNone(rolling_average([1, 2], 3))
+        self.assertIsNone(rolling_average([1, 2, 3], 0))
 
     def test_inventory_days_supply(self):
         self.assertEqual(days_supply(30, 90), 30)
